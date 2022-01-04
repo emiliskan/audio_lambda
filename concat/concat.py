@@ -1,4 +1,5 @@
 import io
+import json
 import os
 
 from aiogram import Bot
@@ -44,8 +45,9 @@ async def get_finish_file(file_ids: list[str], finish_file_name: str) -> io.Buff
 
 
 async def handler(event, context):
-    files = event["body"]["files"]
-    file_name = event["body"]["finishFilename"]
+    body = json.loads(event['body'])
+    files = body["files"]
+    file_name = body["finishFilename"]
 
     try:
         file = await get_finish_file(files, file_name)
