@@ -4,10 +4,7 @@ from concat import handler
 
 
 async def test_normal():
-    response = await handler(
-        {
-            "httpMethod": "POST",
-            "body": {
+    body = """{
                 "files": [
                     "AwACAgIAAxkDAAIIJGGqi2wusiROsxHX4Dihw1STcYWKAALzFAACgHpRSSZWdzGLsZn2IgQ",
                     "AwACAgIAAxkDAAIIJmGqi21T_3L65koWRUrsk9K4RLzgAAL1FAACgHpRSa1PlYxVxHXrIgQ",
@@ -19,8 +16,12 @@ async def test_normal():
                     "AwACAgIAAxkDAAIIJWGqi2xseCQ0jcRBGQRNlEM61UhQAAL0FAACgHpRSdV9ZZoOnnTGIgQ"
                 ],
                 "finishFilename": "chat_id.wav"
-            },
-            "isBase64Encoded": False
+            }"""
+    response = await handler(
+        {
+            "httpMethod": "POST",
+            "isBase64Encoded": False,
+            "body": body,
         },
         {}
     )
@@ -31,11 +32,11 @@ async def test_without_files():
     response = await handler(
         {
             "httpMethod": "POST",
-            "body": {
+            "body": """{
                 "files": [
                 ],
                 "finishFilename": "chat_id.wav"
-            },
+            }""",
             "isBase64Encoded": False
         },
         {}
