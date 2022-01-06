@@ -1,3 +1,4 @@
+import base64
 import io
 import json
 import os
@@ -25,7 +26,7 @@ async def save_files(file_sources: list[str]) -> list[str]:
     return saved_files
 
 
-async def get_finish_file(file_ids: list[str], finish_file_name: str) -> io.BufferedRandom:
+async def join_files(file_ids: list[str], finish_file_name: str) -> io.BufferedRandom:
     saved_files = await save_files(file_ids)
     if len(saved_files) == 0:
         raise FilesNotProvided
@@ -50,14 +51,14 @@ async def handler(event, context):
     file_name = body["finishFilename"]
 
     try:
-        file = await get_finish_file(files, file_name)
+        file = await join_files(files, file_name)
         return {
             'statusCode': 200,
             'headers': {
                 'Content-Type': 'application/ogg'
             },
-            'isBase64Encoded': False,
-            'body': file.read(),
+            'isBase64Encoded': True,
+            'body': base64.b64encode(file.read()).decode('utf-8'),
         }
     except FilesNotProvided:
         return {
